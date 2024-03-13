@@ -13,7 +13,7 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
     private int timer = 2000;
 
     @Test(priority = 1)
-    public void NoOldPassword() throws InterruptedException {
+    public void ViewAccount() throws InterruptedException {
 
 
         LoginPage loginPage = new LoginPage(driver);

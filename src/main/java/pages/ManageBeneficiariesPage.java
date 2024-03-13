@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.time.Duration;
 
-public class ManageBenefeciariesPage {
+public class ManageBeneficiariesPage {
     AndroidDriver driver;
     //WebDriverWait wait = new WebDriverWait(driver, 3);
 
@@ -67,7 +67,7 @@ public class ManageBenefeciariesPage {
 
 
 
-    public ManageBenefeciariesPage(AndroidDriver <AndroidElement>driver) {
+    public ManageBeneficiariesPage(AndroidDriver <AndroidElement>driver) {
         PageFactory.initElements(new AppiumFieldDecorator(driver, Duration.ofSeconds(5)), this);
         //For your Page Object Model
     }
