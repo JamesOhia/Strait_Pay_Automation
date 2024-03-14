@@ -27,10 +27,30 @@ public class ManageBeneficiariesPage {
     private WebElement manageBenefeciariesButton;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Manage Beneficiaries']")
     private WebElement manageBeneficiariesTitle;
+    @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Esenwa Uche Kelvin']")
+    private WebElement accountNumberList;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/btn_account")
     private WebElement accountButoon;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/et_search")
     private WebElement searchAccount;
+    @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/btn_action")
+    private WebElement transferBeneficiaryButton;
+    @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Balance: ₦200,000.00']")
+    private WebElement chooseAccount;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/et_amount")
+    private WebElement transferAmount;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/et_description")
+    private WebElement transferComment;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/btn_make_transfer")
+    private WebElement makeTransfer;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/txt_pin_entry")
+    private WebElement pin;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/tv_title")
+    private WebElement pinErrorTitle;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/tv_message")
+    private WebElement pinErrorMessage;
+    @AndroidFindBy(xpath= "com.appzonegroup.fcmb.dev:id/btn_continue")
+    private WebElement errorContinueButton;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/add_new")
     private WebElement addNewBeneficiary;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Add Account Number']")
@@ -98,12 +118,70 @@ public class ManageBeneficiariesPage {
         return manageBeneficiariesTitle;
     }
 
+    public WebElement getAccountNumberList(){
+        return accountNumberList;
+    }
+
     public WebElement enterSearchAccount(String input){
         searchAccount.sendKeys(input);
         searchAccount.sendKeys(Keys.ENTER);
         return searchAccount;
     }
 
+    public WebElement clickAccountNumber(){
+        accountNumberList.click();
+        return accountNumberList;
+    }
+
+    public WebElement clickTransferBeneficiary(){
+        transferBeneficiaryButton.click();
+        return transferBeneficiaryButton;
+    }
+
+    public WebElement clickChooseAccount(){
+        chooseAccount.click();
+        return chooseAccount;
+    }
+
+    public WebElement enterTransferAmount(String input){
+        transferAmount.sendKeys(input);
+        return transferAmount;
+    }
+
+    public WebElement enterTransferComment(String input){
+        transferComment.sendKeys(input);
+        return transferComment;
+    }
+
+    public WebElement getMakeTransfer(){
+        return makeTransfer;
+    }
+
+    public WebElement clickMakeTransfer(){
+        makeTransfer.click();
+        return makeTransfer;
+    }
+
+
+    public WebElement enterPin(String input){
+        pin.sendKeys(input);
+        return pin;
+    }
+
+    public WebElement getPinErrorTitle(){
+        return pinErrorTitle;
+    }
+
+    public WebElement getPinErrorMessage(){
+        return pinErrorMessage;
+    }
+
+    public WebElement clickErrorContinue(){
+        errorContinueButton.click();
+        return errorContinueButton;
+    }
+
+    //Click Back Button twice
     public WebElement clickNewAddBeneficiaryButton(){
         addNewBeneficiary.click();
         return addNewBeneficiary;
