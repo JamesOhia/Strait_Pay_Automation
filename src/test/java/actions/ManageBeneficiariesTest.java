@@ -216,8 +216,8 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
 
 
 
-        softAssert.assertFalse(managBeneficiaries.clickMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.clickMakeTransfer().isEnabled()) {
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
             System.out.println("Make Transfer Button is successfully disabled since amount is null");
             test.log(Status.PASS, "Make Transfer Button is successfully disabled since amount is null");
         } else {
@@ -228,459 +228,305 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
     }
 
     @Test(priority = 4, dependsOnMethods = "ViewAccount")
-    public void IncompleteOldPassword() throws InterruptedException {
-        String incompletePassword = "Code";
-        String completePassword = "Code@123";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_Old_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with an incomplete old Password ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete Old Password has Started");
+    public void TransferBeneficiaryInvalidPin() throws InterruptedException {
+        String transferAmount = "100";
+        String transferComment = "Testing";
+        String pin = "100000";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Transfer_Beneficiary_Invalid_Pin",
+                "Negative Test to ensure that you cannot Transfer Beneficiary with an invalid Pin in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Transfer Beneficiary Invalid Pin has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterConfirmPassword(completePassword);
-            System.out.println("Confirm Password has been entered");
-            test.log(Status.PASS, "Confirm Password has been entered");
+            managBeneficiaries.enterTransferAmount(transferAmount);
+            System.out.println("Transfer Amount has been entered");
+            test.log(Status.PASS, "Transfer Amount has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Confirm Password");
+            test.log(Status.FAIL, "Error Encountered entering Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
         try {
-            managBeneficiaries.enterNewPassword(completePassword);
-            System.out.println("New Password has been entered");
-            test.log(Status.PASS, "New Password has been entered");
+            managBeneficiaries.enterTransferComment(transferComment);
+            System.out.println("Transfer Comment has been entered");
+            test.log(Status.PASS, "Transfer Comment has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Password");
+            test.log(Status.FAIL, "Error Encountered entering Account Comment");
             throw new RuntimeException(e.getMessage());
         }
 
         try {
-            managBeneficiaries.enterOldPassword(incompletePassword);
-            System.out.println("Incomplete Old Password has been entered");
-            test.log(Status.PASS, "Incomplete Old Password has been entered");
+            managBeneficiaries.clickMakeTransfer();
+            System.out.println("Make Transfer Button has been clicked");
+            test.log(Status.PASS, "Make Transfer Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Old Incomplete Password");
+            test.log(Status.FAIL, "Error Encountered with clicking Make Transfer Button");
+        }
+
+        try {
+            managBeneficiaries.enterPin(pin);
+            System.out.println("Invalid Transfer pin has been entered");
+            test.log(Status.PASS, "Invalid Transfer pin has been entered");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered entering Invalid Transfer pin");
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Old Password is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since Old Password is incomplete");
-        } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+        try {
+            softAssert.assertEquals(managBeneficiaries.getPinErrorTitle().getText(), "Transfer Error");
+            System.out.println("Transfer Error Title is displayed");
+            test.log(Status.PASS, "Transfer Error Title is displayed");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with the Transfer error title element");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete Old Password Test Completed");
+        try {
+            softAssert.assertEquals(managBeneficiaries.getPinErrorMessage().getText(), "An error has occurred. Please try again.");
+            System.out.println("Transfer Error Message is displayed");
+            test.log(Status.PASS, "Transfer Error Message is displayed");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with the Transfer error message element");
+        }
+
+        try {
+            managBeneficiaries.clickErrorContinue();
+            System.out.println("Error Continue Button has been clicked");
+            test.log(Status.PASS, "Error Continue Button has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Error Continue button");
+        }
+
+        try{
+            managBeneficiaries.clickBackButton();
+            System.out.println("Back Button is Clicked");
+            test.log(Status.PASS, "Back Button is Clicked");
+        }
+        catch(Exception e){
+            test.log(Status.FAIL, "Error Encountered clicking on Back Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try{
+            managBeneficiaries.clickBackButton();
+            System.out.println("Back Button is Clicked");
+            test.log(Status.PASS, "Back Button is Clicked");
+        }
+        catch(Exception e){
+            test.log(Status.FAIL, "Error Encountered clicking on Back Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "Manage Beneficiaries for Transfer Beneficiary for Invalid Pin Test Completed");
     }
 
     @Test(priority = 5, dependsOnMethods = "ViewAccount")
-    public void IncompleteNewPassword() throws InterruptedException {
-        String incompletePassword = "Code";
-        String completePassword = "Code@123";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_New_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with an incomplete new Password ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete New Password has Started");
+    public void AddNewBeneficiaryNoAccountNumber() throws InterruptedException {
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with No Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary No Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterConfirmPassword(completePassword);
-            System.out.println("Confirm Password has been entered");
-            test.log(Status.PASS, "Confirm Password has been entered");
+            managBeneficiaries.clickNewAddBeneficiaryButton();
+            System.out.println("Add Beneficiary Button has been clicked");
+            test.log(Status.PASS, "Add Beneficiary Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Confirm Password");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with clicking Add Beneficiary Button");
         }
 
         try {
-            managBeneficiaries.enterOldPassword(completePassword);
-            System.out.println("Old Password has been entered");
-            test.log(Status.PASS, "Old Password has been entered");
+            managBeneficiaries.clickAddAccountNumber();
+            System.out.println("Account Number option has been clicked");
+            test.log(Status.PASS, "Account Number option has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Old Password");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with clicking Account Number option");
         }
 
-        try {
-            managBeneficiaries.enterNewPassword(incompletePassword);
-            System.out.println("Incomplete New Password has been entered");
-            test.log(Status.PASS, "Incomplete New Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Incomplete Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since New Password is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since New Password is incomplete");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is null");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is null");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete New Password Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary No Account Number Test Completed");
     }
 
     @Test(priority = 6, dependsOnMethods = "ViewAccount")
-    public void IncompleteConfirmPassword() throws InterruptedException {
-        String incompletePassword = "Code";
-        String completePassword = "Code@123";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_Confirm_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with an incomplete confirm Password ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete Confirm Password has Started");
+    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+        String account = "017713655";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_Incomplete_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterOldPassword(completePassword);
-            System.out.println("Old Password has been entered");
-            test.log(Status.PASS, "Old Password has been entered");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Incomplete Account Number has been entered");
+            test.log(Status.PASS, "Incomplete Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Old Password");
+            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        try {
-            managBeneficiaries.enterNewPassword(completePassword);
-            System.out.println("New Password has been entered");
-            test.log(Status.PASS, "New Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterConfirmPassword(incompletePassword);
-            System.out.println("Incomplete Confirm Password has been entered");
-            test.log(Status.PASS, "Incomplete Confirm Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Confirm Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Confirm Password is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since Confirm Password is incomplete");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete Confirm Password Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
     @Test(priority = 7, dependsOnMethods = "ViewAccount")
-    public void NonMatchingPassword() throws InterruptedException {
-        String password1 = "Code@123";
-        String password2 = "Code@124";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Non_Matching_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with non matching password ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Non Matching Password has Started");
+    public void AddNewBeneficiaryInvalidAccountNumber() throws InterruptedException {
+        String account = "0177136551";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_Invalid_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Invalid Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Invalid Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterOldPassword(password1);
-            System.out.println("Old Password has been entered");
-            test.log(Status.PASS, "Old Password has been entered");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Invalid Account Number has been entered");
+            test.log(Status.PASS, "Invalid Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Old Password");
+            test.log(Status.FAIL, "Error Encountered entering Invalid Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
         try {
-            managBeneficiaries.enterNewPassword(password1);
-            System.out.println("New Password has been entered");
-            test.log(Status.PASS, "New Password has been entered");
+            managBeneficiaries.clickOptionBank();
+            System.out.println("Option Bank has been clicked");
+            test.log(Status.PASS, "Account Number option has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Password");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with clicking Account Number option");
         }
 
-        try {
-            managBeneficiaries.enterConfirmPassword(password2);
-            System.out.println("Different Confirm Password has been entered");
-            test.log(Status.PASS, "Different Confirm Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Different Confirm Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Confirm Password is Different from New Password");
-            test.log(Status.PASS, "Update Button is successfully disabled since Confirm Password is Different from New Password");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Non Matching Password Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
-    @Test(priority = 8, dependsOnMethods = "ViewAccount")
-    public void NavigateToTransactionPin() throws InterruptedException {
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Navigate_To_Transaction_Pin",
-                "Positive Test to ensure that you can navigate to transaction Pin ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Navigate To Transaction Pin has Started");
+    @Test(priority = 6, dependsOnMethods = "ViewAccount")
+    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+        String account = "017713655";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.clickNavigateTransactionPin();
-            System.out.println("Transaction Pin Button is Clicked");
-            test.log(Status.PASS, "Transaction Pin Button is Clicked");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Incomplete Account Number has been entered");
+            test.log(Status.PASS, "Incomplete Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered clicking on Transaction Pin Button");
+            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Navigate to Transaction Pin Test Completed");
-
-    }
-
-    @Test(priority = 9, dependsOnMethods = "ViewAccount")
-    public void NavigateToLoginPin() throws InterruptedException {
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Navigate_To_Login_Pin",
-                "Positive Test to ensure that you can navigate to login Pin ");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Navigate To Login Pin has Started");
-        ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
-
-        try {
-            managBeneficiaries.clickNavigateLoginPin();
-            System.out.println("Login Pin Button is Clicked");
-            test.log(Status.PASS, "Login Pin Button is Clicked");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered clicking on Login Pin Button");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        test.log(Status.INFO, "Manage Beneficiaries Navigate To Login Pin Test Completed");
-
-    }
-
-    @Test(priority = 10, dependsOnMethods = "ViewAccount")
-    public void NoLoginPassword() throws InterruptedException {
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_No_Login_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with No Login Password");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for No Login Password has Started");
-        ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Login Password is null");
-            test.log(Status.PASS, "Update Button is successfully disabled since Login Password is null");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries No Login Password Test Completed");
-
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
-    @Test(priority = 11, dependsOnMethods = "ViewAccount")
-    public void NoNewLoginPin() throws InterruptedException {
-        String password = "Code@123";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_No_New_Login_Pin",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with No New Login Pin");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for No New Login Pin has Started");
+    @Test(priority = 6, dependsOnMethods = "ViewAccount")
+    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+        String account = "017713655";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Login Password has been entered");
-            test.log(Status.PASS, "Login Password has been entered");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Incomplete Account Number has been entered");
+            test.log(Status.PASS, "Incomplete Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Login Password");
+            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since New Login Pin is null");
-            test.log(Status.PASS, "Update Button is successfully disabled since New Login Pin is null");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries No New Login Pin Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
-    @Test(priority = 12, dependsOnMethods = "ViewAccount")
-    public void NoConfirmNewLoginPin() throws InterruptedException {
-        String password = "Code@123";
-        String pin = "123456";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_No_Confirm_New_Login_Pin",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with No Confirm New Login Pin");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for No Confirm New Login Pin has Started");
+    @Test(priority = 6, dependsOnMethods = "ViewAccount")
+    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+        String account = "017713655";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Login Password has been entered");
-            test.log(Status.PASS, "Login Password has been entered");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Incomplete Account Number has been entered");
+            test.log(Status.PASS, "Incomplete Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Login Password");
+            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        try {
-            managBeneficiaries.enterNewLoginPin(pin);
-            System.out.println("New Login Pin has been entered");
-            test.log(Status.PASS, "New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Confirm New Login Pin is null");
-            test.log(Status.PASS, "Update Button is successfully disabled since Confirm New Login Pin is null");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries No Confirm New Login Pin Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
-    @Test(priority = 13, dependsOnMethods = "ViewAccount")
-    public void IncompleteLoginPassword() throws InterruptedException {
-        String password = "Code";
-        String pin = "123456";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_Login_Password",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with Incomplete Login Password");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete Login Password has Started");
+    @Test(priority = 6, dependsOnMethods = "ViewAccount")
+    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+        String account = "017713655";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
+                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Incomplete Login Password has been entered");
-            test.log(Status.PASS, "Incomplete Login Password has been entered");
+            managBeneficiaries.enterAccountNumber(account);
+            System.out.println("Incomplete Account Number has been entered");
+            test.log(Status.PASS, "Incomplete Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Login Password");
+            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        try {
-            managBeneficiaries.enterNewLoginPin(pin);
-            System.out.println("New Login Pin has been entered");
-            test.log(Status.PASS, "New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterConfirmNewLoginPin(pin);
-            System.out.println("Confirm New Login Pin has been entered");
-            test.log(Status.PASS, "Confirm New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Confirm New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Login Password is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since Login Password is incomplete");
+        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
+            test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete Login Password Test Completed");
-    }
-
-    @Test(priority = 14, dependsOnMethods = "ViewAccount")
-    public void IncompleteNewLoginPin() throws InterruptedException {
-        String password = "Code@123";
-        String pin = "123456";
-        String incompletePin = "1234";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_New_Login_Pin",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with Incomplete New Login Pin");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete New Login Pin has Started");
-        ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
-
-        try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Login Password has been entered");
-            test.log(Status.PASS, "Login Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Login Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterNewLoginPin(incompletePin);
-            System.out.println("Incomplete New Login Pin has been entered");
-            test.log(Status.PASS, "Incomplete New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterConfirmNewLoginPin(pin);
-            System.out.println("Confirm New Login Pin has been entered");
-            test.log(Status.PASS, "Confirm New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Confirm New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since New Login Pin is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since New Login Pin is incomplete");
-        } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
-        }
-
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete New Login Pin Test Completed");
-    }
-
-    @Test(priority = 15, dependsOnMethods = "ViewAccount")
-    public void IncompleteConfirmNewLoginPin() throws InterruptedException {
-        String password = "Code@123";
-        String pin = "123456";
-        String incompletePin = "1234";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Incomplete_Confirm_New_Login_Pin",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with Incomplete Confirm New Login Pin");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Incomplete Confirm New Login Pin has Started");
-        ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
-
-        try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Login Password has been entered");
-            test.log(Status.PASS, "Login Password has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Login Password");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterNewLoginPin(pin);
-            System.out.println("New Login Pin has been entered");
-            test.log(Status.PASS, "New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        try {
-            managBeneficiaries.enterConfirmNewLoginPin(incompletePin);
-            System.out.println("Incomplete Confirm New Login Pin has been entered");
-            test.log(Status.PASS, "Incomplete Confirm New Login Pin  has been entered");
-        } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Confirm New Login Pin ");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        softAssert.assertFalse(managBeneficiaries.getUpdateButton().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getUpdateButton().isEnabled()) {
-            System.out.println("Update Button is successfully disabled since Confirm New Login Pin is incomplete");
-            test.log(Status.PASS, "Update Button is successfully disabled since Confirm New Login Pin is incomplete");
-        } else {
-            test.log(Status.FAIL, "Login Button is Enabled");
-        }
-
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete Confirm New Login Pin Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
     }
 
     @Test(priority = 16, dependsOnMethods = "ViewAccount")
