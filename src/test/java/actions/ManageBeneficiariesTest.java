@@ -401,56 +401,64 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
         try {
             managBeneficiaries.clickOptionBank();
             System.out.println("Option Bank has been clicked");
-            test.log(Status.PASS, "Account Number option has been clicked");
+            test.log(Status.PASS, "Option Bank has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered with clicking Account Number option");
+            test.log(Status.FAIL, "Error Encountered with clicking Option Bank");
         }
 
         softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
         if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
+            System.out.println("Make Transfer Button is successfully disabled since Account Number is invalid");
+            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is invalid");
         } else {
             test.log(Status.FAIL, "Make Transfer Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary Invalid Account Number Test Completed");
     }
 
-    @Test(priority = 6, dependsOnMethods = "ViewAccount")
-    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
-        String account = "017713655";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
-                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
+    @Test(priority = 8, dependsOnMethods = "ViewAccount")
+    public void AddNewBeneficiaryAccountNumber() throws InterruptedException {
+        String account = "0177136558";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_Account_Number",
+                "Positive Test to ensure that you can Add New Beneficiary with valid Account Number in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary valid Account Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
             managBeneficiaries.enterAccountNumber(account);
-            System.out.println("Incomplete Account Number has been entered");
-            test.log(Status.PASS, "Incomplete Account Number has been entered");
+            System.out.println("Valid Account Number has been entered");
+            test.log(Status.PASS, "Valid Account Number has been entered");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
+            test.log(Status.FAIL, "Error Encountered entering Valid Account Number");
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
-        } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+        try {
+            managBeneficiaries.clickOptionBank();
+            System.out.println("Option Bank has been clicked");
+            test.log(Status.PASS, "Option Bank has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Option Bank");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
+        try {
+            managBeneficiaries.clickAddBeneficiaryButton();
+            System.out.println("Beneficiary Button has been clicked");
+            test.log(Status.PASS, "Beneficiary Button has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Beneficiary Button");
+        }
+
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary Account Number Test Completed");
     }
 
-    @Test(priority = 6, dependsOnMethods = "ViewAccount")
-    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
+    @Test(priority = 9, dependsOnMethods = "ViewAccount")
+    public void DeleteBeneficiary() throws InterruptedException {
         String account = "017713655";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
-                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Delete_Beneficiary",
+                "Positive Test to ensure that you Delete Beneficiary in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Delete Beneficiary has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
