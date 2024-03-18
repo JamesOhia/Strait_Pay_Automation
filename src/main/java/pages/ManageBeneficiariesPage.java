@@ -192,6 +192,10 @@ public class ManageBeneficiariesPage {
         return accountNumber;
     }
 
+    public WebElement getAddBeneficiaryButton(){
+        return addBeneficiaryButton;
+    }
+
     public WebElement enterAccountNumber(String input){
         accountNumber.clear();
         accountNumber.sendKeys(input);
@@ -216,6 +220,11 @@ public class ManageBeneficiariesPage {
     public WebElement clickSelfTopButton(){
         selfTopButton.click();
         return selfTopButton;
+    }
+
+    public WebElement clickDeleteBeneficiary(){
+        deleteBeneficiary.click();
+        return deleteBeneficiary;
     }
 
     public WebElement clickConfirmDelete(){

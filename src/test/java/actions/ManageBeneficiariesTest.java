@@ -342,12 +342,12 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
             test.log(Status.FAIL, "Error Encountered with clicking Account Number option");
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is null");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is null");
+        softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getAddBeneficiaryButton().isEnabled()) {
+            System.out.println("Add Beneficiary Button is successfully disabled since Account Number is null");
+            test.log(Status.PASS, "Add Beneficiary Button is successfully disabled since Account Number is null");
         } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+            test.log(Status.FAIL, "Add Beneficiary Button is Enabled");
         }
 
         test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary No Account Number Test Completed");
@@ -370,12 +370,12 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
+        softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getAddBeneficiaryButton().isEnabled()) {
+            System.out.println("Add Beneficiary Button is successfully disabled since Account Number is incomplete");
+            test.log(Status.PASS, "Add Beneficiary Button is successfully disabled since Account Number is incomplete");
         } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+            test.log(Status.FAIL, "Add Beneficiary Button is Enabled");
         }
 
         test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
@@ -406,12 +406,12 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
             test.log(Status.FAIL, "Error Encountered with clicking Option Bank");
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is invalid");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is invalid");
+        softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getAddBeneficiaryButton().isEnabled()) {
+            System.out.println("Add Beneficiary Button is successfully disabled since Account Number is invalid");
+            test.log(Status.PASS, "Add Beneficiary Button is successfully disabled since Account Number is invalid");
         } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+            test.log(Status.FAIL, "Add Beneficiary Button is Enabled");
         }
 
         test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary Invalid Account Number Test Completed");
@@ -462,140 +462,176 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterAccountNumber(account);
-            System.out.println("Incomplete Account Number has been entered");
-            test.log(Status.PASS, "Incomplete Account Number has been entered");
+            managBeneficiaries.clickChooseBeneficiary();
+            System.out.println("A Beneficiary has been selected");
+            test.log(Status.PASS, "A Beneficiary has been selected");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with selecting a Beneficiary");
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
-        } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+        try {
+            managBeneficiaries.clickDeleteBeneficiary();
+            System.out.println("Delete Beneficiary Button has been selected");
+            test.log(Status.PASS, "Delete Beneficiary Button has been selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Delete Beneficiary Button");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
+        try {
+            managBeneficiaries.clickConfirmDelete();
+            System.out.println("Confirm Delete Beneficiary Button has been selected");
+            test.log(Status.PASS, "Confirm Delete Beneficiary Button has been selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Confirm Delete Beneficiary Button");
+        }
+        test.log(Status.INFO, "Manage Beneficiaries for Delete Beneficiary Test Completed");
     }
 
-    @Test(priority = 6, dependsOnMethods = "ViewAccount")
-    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
-        String account = "017713655";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
-                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
+    @Test(priority = 10, dependsOnMethods = "ViewAccount")
+    public void SearchBeneficiaryNumber() throws InterruptedException {
+        String name = "Test";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Search_Beneficiary_Number",
+                "Postive Test to ensure that you can Search Beneficiary Number in the Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Search Beneficiary Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterAccountNumber(account);
-            System.out.println("Incomplete Account Number has been entered");
-            test.log(Status.PASS, "Incomplete Account Number has been entered");
+            managBeneficiaries.clickSelfTopButton();
+            System.out.println("Self Top Button has been clicked");
+            test.log(Status.PASS, "Self Top Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
+            test.log(Status.FAIL, "Error Encountered with clicking Self Top Button");
+        }
+
+        try {
+            managBeneficiaries.enterSearchNumber(name);
+            System.out.println("Name has been entered in the search number field");
+            test.log(Status.PASS, "Name has been entered in the search number field");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered entering Name");
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
-        } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
-        }
-
-        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Search Beneficiary Number Test Completed");
     }
 
-    @Test(priority = 6, dependsOnMethods = "ViewAccount")
-    public void AddNewBeneficiaryIncompleteAccountNumber() throws InterruptedException {
-        String account = "017713655";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_New_Beneficiary_No_Incomplete_Account_Number",
-                "Negative Test to ensure that you cannot Add New Beneficiary with Incomplete Account Number in Manage Beneficiaries");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Add New Beneficiary Incomplete Account Number has Started");
+    @Test(priority = 11, dependsOnMethods = "ViewAccount")
+    public void AddPhoneNumberNoNumber() throws InterruptedException {
+        String name = "Test";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_Phone_Number_No_Number",
+                "Negative Test to ensure that you cannot Add New Phone Number without Number inputted in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add Phone Number No Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterAccountNumber(account);
-            System.out.println("Incomplete Account Number has been entered");
-            test.log(Status.PASS, "Incomplete Account Number has been entered");
+            managBeneficiaries.clickSelfTopButton();
+            System.out.println("Self Top Button has been clicked");
+            test.log(Status.PASS, "Self Top Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Incomplete Account Number");
+            test.log(Status.FAIL, "Error Encountered with clicking Self Top Button");
+        }
+
+        try {
+            managBeneficiaries.clickNewAddBeneficiaryButton();
+            System.out.println("Add Beneficiary Button has been clicked");
+            test.log(Status.PASS, "Add Beneficiary Button has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Add Beneficiary Button");
+        }
+
+        try {
+            managBeneficiaries.clickAddPhoneNumber();
+            System.out.println("Add Phone Number Option has been clicked");
+            test.log(Status.PASS, "Add Phone Number Option has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Add Phone Number Option");
+        }
+
+        try {
+            managBeneficiaries.clickAirtelButton();
+            System.out.println("Airtel Button has been clicked");
+            test.log(Status.PASS, "Airtel Button has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Airtel Button");
+        }
+
+        try {
+            managBeneficiaries.enterSearchNumber(name);
+            System.out.println("Name has been entered in the search number field");
+            test.log(Status.PASS, "Name has been entered in the search number field");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered entering Name");
             throw new RuntimeException(e.getMessage());
         }
 
-        softAssert.assertFalse(managBeneficiaries.getMakeTransfer().isEnabled()); //Assert if false
-        if (!managBeneficiaries.getMakeTransfer().isEnabled()) {
-            System.out.println("Make Transfer Button is successfully disabled since Account Number is incomplete");
-            test.log(Status.PASS, "Make Transfer Button is successfully disabled since Account Number is incomplete");
+        softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getAddBeneficiaryButton().isEnabled()) {
+            System.out.println("Add Beneficiary Button is successfully disabled since Phone Number is null");
+            test.log(Status.PASS, "Add Beneficiary Button is successfully disabled since Phone Number is null");
         } else {
-            test.log(Status.FAIL, "Make Transfer Button is Enabled");
+            test.log(Status.FAIL, "Add Beneficiary Button is Enabled");
         }
 
-        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary incomplete Account Number Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary No Number Test Completed");
     }
 
-    @Test(priority = 16, dependsOnMethods = "ViewAccount")
-    public void NonMatchingPin() throws InterruptedException {
-        String password = "Code@123";
-        String pin1 = "123456";
-        String pin2 = "123457";
-        ExtentTest test = extent.createTest("Manage_Beneficiaries_Non_Matching_Pin",
-                "Negative Test to ensure that you cannot Manage Beneficiaries with Non Matching Pin");
-        test.log(Status.INFO, "Testing Manage Beneficiaries for Non Matching Pin has Started");
+    @Test(priority = 12, dependsOnMethods = "ViewAccount")
+    public void AddPhoneNumberIncompleteNumber() throws InterruptedException {
+        String name = "Test";
+        ExtentTest test = extent.createTest("Manage_Beneficiaries_Add_Phone_Number_No_Number",
+                "Negative Test to ensure that you cannot Add New Phone Number without Number inputted in Manage Beneficiaries");
+        test.log(Status.INFO, "Testing Manage Beneficiaries for Add Phone Number No Number has Started");
         ManageBeneficiariesPage managBeneficiaries = new ManageBeneficiariesPage(driver);
 
         try {
-            managBeneficiaries.enterLoginPassword(password);
-            System.out.println("Login Password has been entered");
-            test.log(Status.PASS, "Login Password has been entered");
+            managBeneficiaries.clickSelfTopButton();
+            System.out.println("Self Top Button has been clicked");
+            test.log(Status.PASS, "Self Top Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Login Password");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with clicking Self Top Button");
         }
 
         try {
-            managBeneficiaries.enterNewLoginPin(pin1);
-            System.out.println("New Login Pin has been entered");
-            test.log(Status.PASS, "New Login Pin  has been entered");
+            managBeneficiaries.clickNewAddBeneficiaryButton();
+            System.out.println("Add Beneficiary Button has been clicked");
+            test.log(Status.PASS, "Add Beneficiary Button has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering New Login Pin ");
-            throw new RuntimeException(e.getMessage());
+            test.log(Status.FAIL, "Error Encountered with clicking Add Beneficiary Button");
         }
 
         try {
-            managBeneficiaries.enterConfirmNewLoginPin(pin2);
-            System.out.println("Different Confirm New Login Pin has been entered");
-            test.log(Status.PASS, "Different Confirm New Login Pin  has been entered");
+            managBeneficiaries.clickAddPhoneNumber();
+            System.out.println("Add Phone Number Option has been clicked");
+            test.log(Status.PASS, "Add Phone Number Option has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered entering Different Confirm New Login Pin ");
+            test.log(Status.FAIL, "Error Encountered with clicking Add Phone Number Option");
+        }
+
+        try {
+            managBeneficiaries.clickAirtelButton();
+            System.out.println("Airtel Button has been clicked");
+            test.log(Status.PASS, "Airtel Button has been clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered with clicking Airtel Button");
+        }
+
+        try {
+            managBeneficiaries.enterSearchNumber(name);
+            System.out.println("Name has been entered in the search number field");
+            test.log(Status.PASS, "Name has been entered in the search number field");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered entering Name");
             throw new RuntimeException(e.getMessage());
         }
 
-        try{
-            managBeneficiaries.clickUpdateButton();
-            System.out.println("Update Button is Clicked and page remains intact due to Pin mismatch");
-            test.log(Status.PASS, "Update Button is Clicked and page remains intact due to Pin mismatch");
-        }
-        catch(Exception e){
-            test.log(Status.FAIL, "Error Encountered clicking on Update Button");
-            throw new RuntimeException(e.getMessage());
+        softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
+        if (!managBeneficiaries.getAddBeneficiaryButton().isEnabled()) {
+            System.out.println("Add Beneficiary Button is successfully disabled since Phone Number is null");
+            test.log(Status.PASS, "Add Beneficiary Button is successfully disabled since Phone Number is null");
+        } else {
+            test.log(Status.FAIL, "Add Beneficiary Button is Enabled");
         }
 
-        Thread.sleep(2000);
-
-        try{
-            managBeneficiaries.clickBackButton();
-            System.out.println("Back Button is Clicked");
-            test.log(Status.PASS, "Back Button is Clicked");
-        }
-        catch(Exception e){
-            test.log(Status.FAIL, "Error Encountered clicking on Back Button");
-            throw new RuntimeException(e.getMessage());
-        }
-
-        test.log(Status.INFO, "Manage Beneficiaries Incomplete Confirm New Login Pin Test Completed");
+        test.log(Status.INFO, "Manage Beneficiaries for Add New Beneficiary No Number Test Completed");
     }
 }
