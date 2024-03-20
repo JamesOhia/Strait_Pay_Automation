@@ -27,7 +27,7 @@ public class ManageBeneficiariesPage {
     private WebElement manageBenefeciariesButton;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Manage Beneficiaries']")
     private WebElement manageBeneficiariesTitle;
-    @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Esenwa Uche Kelvin']")
+    @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'ESENWA UCHE KELVIN']")
     private WebElement accountNumberList;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/btn_account")
     private WebElement accountButoon;
@@ -54,7 +54,7 @@ public class ManageBeneficiariesPage {
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/add_new")
     private WebElement addNewBeneficiary;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Add Account Number']")
-    private WebElement optionAccounNumber;
+    private WebElement optionAccountNumber;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/et_account_no")
     private WebElement accountNumber;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'GTBank Plc")
@@ -188,8 +188,8 @@ public class ManageBeneficiariesPage {
     }
 
     public WebElement clickAddAccountNumber(){
-        accountNumber.click();
-        return accountNumber;
+        optionAccountNumber.click();
+        return optionAccountNumber;
     }
 
     public WebElement getAddBeneficiaryButton(){
