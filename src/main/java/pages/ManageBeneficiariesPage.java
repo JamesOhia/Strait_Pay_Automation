@@ -57,6 +57,8 @@ public class ManageBeneficiariesPage {
     private WebElement optionAccountNumber;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/et_account_no")
     private WebElement accountNumber;
+    @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'Providus Bank']")
+    private WebElement invalidBank;
     @AndroidFindBy(xpath= "//android.widget.TextView[@text = 'GTBank Plc")
     private WebElement optionBank;
     @AndroidFindBy(id= "com.appzonegroup.fcmb.dev:id/btn_add_new_beneficiary")
@@ -200,6 +202,11 @@ public class ManageBeneficiariesPage {
         accountNumber.clear();
         accountNumber.sendKeys(input);
         return accountNumber;
+    }
+
+    public WebElement clickInvalidBank(){
+        invalidBank.click();
+        return invalidBank;
     }
 
     public WebElement clickOptionBank(){

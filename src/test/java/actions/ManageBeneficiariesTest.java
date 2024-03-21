@@ -399,11 +399,11 @@ public class ManageBeneficiariesTest extends CapabilitySetup {
         }
 
         try {
-            managBeneficiaries.clickOptionBank();
-            System.out.println("Option Bank has been clicked");
-            test.log(Status.PASS, "Option Bank has been clicked");
+            managBeneficiaries.clickInvalidBank();
+            System.out.println("Providus Bank has been clicked");
+            test.log(Status.PASS, "Providus Bank has been clicked");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered with clicking Option Bank");
+            test.log(Status.FAIL, "Error Encountered with clicking Providus Bank");
         }
 
         softAssert.assertFalse(managBeneficiaries.getAddBeneficiaryButton().isEnabled()); //Assert if false
