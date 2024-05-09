@@ -147,6 +147,16 @@ public class HideAccountBalanceTest extends CapabilitySetup {
             throw new RuntimeException(e.getMessage());
         }
 
+        try{
+            hideAccountBalancePage.clickBackButton();
+            System.out.println("Back Button is Clicked");
+            test.log(Status.PASS, "Back Button is Clicked");
+        }
+        catch(Exception e){
+            test.log(Status.FAIL, "Error Encountered clicking on Back Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
         test.log(Status.INFO, "Display Account Balance Test Completed");
     }
 

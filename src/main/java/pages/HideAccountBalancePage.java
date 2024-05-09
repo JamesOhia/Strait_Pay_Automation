@@ -26,6 +26,8 @@ public class HideAccountBalancePage {
     private WebElement hideAccountButton;
     @AndroidFindBy(id = "com.appzonegroup.fcmb.dev:id/tv_hide_account_balance_caption")
     private WebElement accountBalanceHidden;
+    @AndroidFindBy(xpath= "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
+    private WebElement backButton;
 
 
     public HideAccountBalancePage(AndroidDriver<AndroidElement> driver) {
@@ -58,5 +60,10 @@ public class HideAccountBalancePage {
 
     public WebElement getAccountBalanceHidden() {
         return accountBalanceHidden;
+    }
+
+    public WebElement clickBackButton(){
+        backButton.click();
+        return backButton;
     }
 }
