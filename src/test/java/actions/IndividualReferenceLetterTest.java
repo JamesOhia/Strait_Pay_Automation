@@ -2,6 +2,7 @@ package actions;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import io.appium.java_client.MobileBy;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.IndividualReferenceLetterPage;
@@ -10,14 +11,14 @@ import utility.ScrollManager;
 
 public class IndividualReferenceLetterTest extends CapabilitySetup {
 
-    ScrollManager scroll = new ScrollManager(driver);
     SoftAssert softAssert = new SoftAssert();
     private int timer = 2000;
-    private String findText = "Next";
+
 
     @Test(priority = 1)
     public void NoReceipt() throws InterruptedException {
-        
+        String findText = "Next";
+        ScrollManager scroll = new ScrollManager(driver);
         LoginPage loginPage = new LoginPage(driver);
         ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Receipt",
                 "Negative Test to ensure that you can not create Individual Reference Letter without Receipt");
@@ -138,6 +139,7 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
             throw new RuntimeException(e.getMessage());
         }
 
+        Thread.sleep(2000);
 
         try {
             scroll.scrollToText(findText);
@@ -162,6 +164,7 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
 
     @Test(priority = 2, dependsOnMethods = "NoReceipt")
     public void NoReceiptAddress() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
         String ref = "Testing";
         String findText = "Recipient";
         ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Receipt_Address",
@@ -171,10 +174,10 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
 
         try {
             scroll.scrollToText(findText);
-            System.out.println("Scroll up to Receipt Field");
-            test.log(Status.PASS, "Scrolled up to Receipt Field");
+            System.out.println("Scroll up to Recipient");
+            test.log(Status.PASS, "Scrolled up to Recipient");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered scrolling to Receipt Field");
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
             throw new RuntimeException(e.getMessage());
         }
 
@@ -188,7 +191,6 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
         }
 
         findText = "Next";
-
         try {
             scroll.scrollToText(findText);
             System.out.println("Scroll down to Next Button");
@@ -210,21 +212,22 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
         test.log(Status.INFO, "No Recipient Address Test Completed");
     }
 
-    @Test(priority = 3, dependsOnMethods = "NoReceipt")
+    @Test(priority = 3)
     public void NoForWho() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
         String ref = "Testing";
         String findText = "Recipient Address";
         ExtentTest test = extent.createTest("Individual_Reference_Letter_No_For_Who",
-                "Negative Test to ensure that you cannot For Reference Letter without entering For Who ");
+                "Negative Test to ensure that you cannot create Individual Reference Letter without entering For Who ");
         test.log(Status.INFO, "Testing No For Who has Started");
         IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
 
         try {
             scroll.scrollToText(findText);
-            System.out.println("Scroll up to Recipient Address Field");
-            test.log(Status.PASS, "Scrolled up to Recipient Address Field");
+            System.out.println("Scroll up to address field");
+            test.log(Status.PASS, "Scroll up to address field");
         } catch (Exception e) {
-            test.log(Status.FAIL, "Error Encountered scrolling to Recipient Address Field");
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
             throw new RuntimeException(e.getMessage());
         }
 
@@ -238,7 +241,6 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
         }
 
         findText = "Next";
-
         try {
             scroll.scrollToText(findText);
             System.out.println("Scroll down to Next Button");
@@ -258,5 +260,280 @@ public class IndividualReferenceLetterTest extends CapabilitySetup {
         }
 
         test.log(Status.INFO, "No For Who Test Completed");
+    }
+
+    @Test(priority = 4)
+    public void NoAccountReferenced() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
+        String ref = "Testing";
+        String findText = "For Who";
+        ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Account_Referenced",
+                "Negative Test to ensure that you cannot create Individual Reference Letter without choosing Account To Be Referenced ");
+        test.log(Status.INFO, "Testing No Account Referenced has Started");
+        IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
+
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll up to For Who");
+            test.log(Status.PASS, "Scroll up to For Who");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.enterForWhoField(ref);
+            System.out.println("For Who has been entered");
+            test.log(Status.PASS, "For Who has been entered");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when entering For Who");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        findText = "Next";
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll down to Next Button");
+            test.log(Status.PASS, "Scrolled down to Next Button");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertFalse(individualReferenceLetterPage.getNextButton().isEnabled());
+            System.out.println("Next Button is disabled because Account To Be Referenced is not selected");
+            test.log(Status.PASS, "Next Button is disabled because Account To Be Referenced is not selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered clicking on Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "No Account Referenced Test Completed");
+    }
+
+    @Test(priority = 5)
+    public void NoPickupBranch() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
+        //String ref = "FESTAC BRANCH";
+        String findText = "Account to be Referenced";
+        ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Pickup_Branch",
+                "Negative Test to ensure that you cannot create Individual Reference Letter without entering Pickup Branch");
+        test.log(Status.INFO, "Testing No Account Referenced has Started");
+        IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
+
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll up to Account to be Referenced");
+            test.log(Status.PASS, "Scrolled up to Account to be Referenced");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.clickAccountToBeReferenced();
+            System.out.println("Account To Be Referenced has been Selected");
+            test.log(Status.PASS, "Account To Be Referenced has been Selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when selecting Account To Be Referenced");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        findText = "Next";
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll down to Next Button");
+            test.log(Status.PASS, "Scrolled down to Next Button");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertFalse(individualReferenceLetterPage.getNextButton().isEnabled());
+            System.out.println("Next Button is disabled because Preferred Pickup Branch is null");
+            test.log(Status.PASS, "Next Button is disabled because Preferred Pickup Branch is null");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered clicking on Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "No Pickup Branch Test Completed");
+    }
+
+    @Test(priority = 6)
+    public void NoAccountToCharge() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
+        String ref = "FESTAC BRANCH";
+        String findText = "Preferred Pickup Branch";
+        ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Account_To_Charge",
+                "Negative Test to ensure that you cannot create Individual Reference Letter without selecting Account To Charge");
+        test.log(Status.INFO, "No Account To Charge Test has Started");
+        IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
+
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll up to Preferred Pickup Branch");
+            test.log(Status.PASS, "Scrolled up to Preferred Pickup Branch");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.enterBranchNameField(ref);
+            System.out.println("Preferred Branch Name has been entered");
+            test.log(Status.PASS, "Preferred Branch Name has been entered");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when entering Preferred Branch Name");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        findText = "Next";
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll down to Next Button");
+            test.log(Status.PASS, "Scrolled down to Next Button");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertFalse(individualReferenceLetterPage.getNextButton().isEnabled());
+            System.out.println("Next Button is disabled because Account To Charge isn't selected");
+            test.log(Status.PASS, "Next Button is disabled because Account To Charge isn't selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered clicking on Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "No Account To Charge Test Completed");
+    }
+
+    @Test(priority = 7)
+    public void NoAdditionalNotes() throws InterruptedException {
+        ScrollManager scroll = new ScrollManager(driver);
+        String findText = "Account To Charge";
+        ExtentTest test = extent.createTest("Individual_Reference_Letter_No_Additional_Notes",
+                "Negative Test to ensure that you cannot create Individual Reference Letter without Additional Notes");
+        test.log(Status.INFO, "No Additional Notes Test has Started");
+        IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
+
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll up to Account To Charge");
+            test.log(Status.PASS, "Scrolled up to Account To Charge");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.clickAccountToBeCharged();
+            System.out.println("Account To Be Charged has been Selected");
+            test.log(Status.PASS, "Account To Be Charged has been Selected");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when entering Account To Be Charged");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        findText = "Next";
+        try {
+            scroll.scrollToText(findText);
+            System.out.println("Scroll down to Next Button");
+            test.log(Status.PASS, "Scrolled down to Next Button");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered scrolling to Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertFalse(individualReferenceLetterPage.getNextButton().isEnabled());
+            System.out.println("Next Button is disabled because Additional Notes is null");
+            test.log(Status.PASS, "Next Button is disabled because Additional Notes is null");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered clicking on Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "No Additional Notes Test Completed");
+    }
+
+    @Test(priority = 7, dependsOnMethods = "NoAdditionalNotes")
+    public void InvalidPin() throws InterruptedException {
+        String ref = "Testing Additional Notes";
+        String pin = "123456";
+        ExtentTest test = extent.createTest("Individual_Reference_Letter_Invalid_Pin",
+                "Negative Test to ensure that you cannot create Individual Reference Letter with an Invalid Pin");
+        test.log(Status.INFO, "Invalid Pin Test has Started");
+        IndividualReferenceLetterPage individualReferenceLetterPage = new IndividualReferenceLetterPage(driver);
+
+        try {
+            individualReferenceLetterPage.enterAdditionalNotesField(ref);
+            System.out.println("Additional Notes has been Entered");
+            test.log(Status.PASS, "Additional Notes has been Entered");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when entering Additional Notes");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.clickNextButton();
+            System.out.println("Next Button has been Clicked");
+            test.log(Status.PASS, "Next Button has been Clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when clicking Next Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.enterPinEntry(pin);
+            System.out.println("Invalid Pin has been Entered");
+            test.log(Status.PASS, "Invalid Pin has been Entered");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when entering Invalid Pin");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertFalse(individualReferenceLetterPage.getErrorTitle().isDisplayed());
+            System.out.println("Error Title is Displayed because the Pin is invalid");
+            test.log(Status.PASS, "Error Title is Displayed because the Pin is invalid");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered displaying Error Title");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            softAssert.assertEquals(individualReferenceLetterPage.getErrorTitle().getText(), "Request Submission Failed");
+            System.out.println("Error Title Text is accurate");
+            test.log(Status.PASS, "Error Title Text is accurate");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Title Text isn't accurate or an Error Occurred");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            individualReferenceLetterPage.clickErrorContinue();
+            System.out.println("Error Cancel Button has been Clicked");
+            test.log(Status.PASS, "Error Cancel Button has been Clicked");
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Error Encountered when clicking Error Cancel Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try{
+            individualReferenceLetterPage.clickBackButton();
+            System.out.println("Back Button is Clicked");
+            test.log(Status.PASS, "Back Button is Clicked");
+        }
+        catch(Exception e){
+            test.log(Status.FAIL, "Error Encountered clicking on Back Button");
+            throw new RuntimeException(e.getMessage());
+        }
+
+        test.log(Status.INFO, "Invalid Pin Test Completed");
     }
 }

@@ -25,12 +25,12 @@ public class CapabilitySetup extends ExtentReportClass{
 
     @BeforeClass
     public void SetUp() throws MalformedURLException {
-       /* service = AppiumDriverLocalService.buildDefaultService();
+        service = AppiumDriverLocalService.buildDefaultService();
         service.start();
         if (service == null || !service.isRunning()) {
             throw new AppiumServerHasNotBeenStartedLocallyException(
                     "An appium server node is not started!");
-        }*/
+        }
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "emulator-5554");
