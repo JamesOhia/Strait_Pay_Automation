@@ -25,12 +25,12 @@ public class CapabilitySetup extends ExtentReportClass{
 
     @BeforeClass
     public void SetUp() throws MalformedURLException {
-        service = AppiumDriverLocalService.buildDefaultService();
+       /* service = AppiumDriverLocalService.buildDefaultService();
         service.start();
         if (service == null || !service.isRunning()) {
             throw new AppiumServerHasNotBeenStartedLocallyException(
                     "An appium server node is not started!");
-        }
+        }*/
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "emulator-5554");
@@ -40,8 +40,8 @@ public class CapabilitySetup extends ExtentReportClass{
         //force apk not to re-install
         capabilities.setCapability("noReset", "true");
         capabilities.setCapability("fullReset", "false");
-        capabilities.setCapability("appPackage", "com.appzonegroup.fcmb.dev");
-        capabilities.setCapability("appActivity", "com.appzonegroup.fcmb.features.login.activity.SplashActivity");
+        capabilities.setCapability("appPackage", "com.straitpay.straitpay");
+        capabilities.setCapability("appActivity", "com.straitpay.straitpay.MainActivity");
         capabilities.setCapability("automationName", "UiAutomator2");
         capabilities.setCapability("unicodeKeyboard", true);
         capabilities.setCapability("resetKeyboard", true);
@@ -51,6 +51,7 @@ public class CapabilitySetup extends ExtentReportClass{
         //Skip the installation of io.appium.settings app and the UIAutomator 2 server
 //        capabilities.setCapability("skipDeviceInitialization", "true");
 //        capabilities.setCapability("skipServerInstallation", "true");
+
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
@@ -58,7 +59,7 @@ public class CapabilitySetup extends ExtentReportClass{
     /**
      * finishing.
      */
-  /* @AfterClass
+   /*@AfterClass
     public static void afterClass() {
         if (driver != null) {
             driver.quit();
